@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.example.bangbangxia.dao.TaskMapper">
+
+    <!--添加任务-->
+    <insert id="insertTask" parameterType="com.example.bangbangxia.domain.Task">
+        insert into task (task_name,task_content,task_createtime) values (#{task_name},#{task_content},#{task_createtime})
+    </insert>
+
+    <!--更新任务-->
+    <update id="updateTask" parameterType="com.example.bangbangxia.domain.Task">
+        update task set task_name=#{task_name},task_content=#{task_content},task_createtime=#{task_createtime}
+        where task_id=#{task_id}
+    </update>
+
+    <!--接受任务-->
+    <update id="updateTaskByID" parameterType="com.example.bangbangxia.domain.Task">
+        update task set accept_userId=#{accept_userId},task_state=2
+        where task_id=#{task_id}
+    </update>
+
+    <!--删除任务-->
+    <delete id="deleteTask" parameterType="int">
+        delete from task where task_id=#{task_id}
+    </delete>
+
+    <!--查询所有任务-->
+    <select id="queryTaskList" resultType="com.example.bangbangxia.domain.Task">
+        select * from task where user_id != #{user_id} and task_state=1
+        order by task_createtime desc limit #{param1},#{param2}
+    </select>
+    <!--查询所有任务总条数-->
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from task
+    </select>
+
+    <!--查看自己发布的正在进行中的任务-->
+    <select id="queryMyTaskProcess" resultType="com.example.bangbangxia.domain.Task">
+        select * from task where user_id = #{param3} and task_state=2
+        order by task_createtime desc limit #{param1},#{param2}
+    </select>
+    <select id="getTotal2" resultType="java.lang.Long">
+        select count(*) from task
+        <where>
+            <if test="task_state!=null">
+                and task_state=#{task_state}
+            </if>
+            <if test=""
+        </where>
+    </select>
+</mapper>

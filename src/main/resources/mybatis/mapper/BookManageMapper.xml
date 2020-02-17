@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.example.bangbangxia.dao.BookManageMapper">
+    <!--新增图书-->
+    <insert id="insertBook" parameterType="com.example.bangbangxia.domain.BookManage">
+        insert into BookManage (book_name,book_author,book_inventory,book_price)
+        values (#{book_name},#{book_author},#{book_inventory},#{book_price})
+    </insert>
+
+    <!--借阅图书-->
+    <insert id="addSubBook" parameterType="com.example.bangbangxia.domain.BookManage">
+        insert into user_sub (user_id,book_id,subDateTime,booktype,returntype)
+        values (#{user_id},#{book_id},#{subDateTime},#{booktype},#{returntype})
+    </insert>
+
+    <!--更新图书-->
+    <update id="updateBook" parameterType="com.example.bangbangxia.domain.BookManage">
+        update bookmanage set book_name=#{book_name},book_author=#{book_author},
+        book_inventory=#{book_inventory},book_price=#{book_price}
+        where book_id=#{book_id}
+    </update>
+
+    <!--归还图书-->
+    <update id="returnSubBook" parameterType="com.example.bangbangxia.domain.BookManage">
+        update user_sub
+        <set>
+            <if test="returnDateTime!=null and returnDateTime!=''">
+                returnDateTime = #{returnDateTime},
+            </if>
+            <if test="booktype!=null  and booktype=='2'.toString()">
+                booktype = #{booktype},
+            </if>
+            <if test="returntype!=null">
+                returntype = #{returntype},
+            </if>
+        </set>
+        <where>
+            <if test="user_id!=null and user_id!=''">
+                user_id = #{user_id}
+            </if>
+
+            <if test="book_id!=null and book_id!=''">
+                and book_id =#{book_id}
+            </if>
+
+            <if test="booktype!=null and booktype == '1'.toString()">
+                AND booktype=#{booktype}
+            </if>
+        </where>
+    </update>
+
+    <!--更新图书库存-->
+    <update id="updateInventory" parameterType="com.example.bangbangxia.domain.BookManage">
+        update bookmanage set book_inventory=#{book_inventory} where book_id=#{book_id}
+    </update>
+
+    <!--删除图书-->
+    <delete id="deleteBookById" parameterType="int">
+        delete from bookmanage where book_id=#{book_id}
+    </delete>
+
+    <!--分页查询图书列表-->
+    <select id="queryBookList" resultType="com.example.bangbangxia.domain.Book">
+        select * from bookmanage limit #{param1},#{param2}
+    </select>
+    <!--总条数-->
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from bookmanage
+    </select>
+
+    <!--查看图书借阅列表-->
+    <select id="queryBookSub" resultType="com.example.bangbangxia.domain.BookSub">
+        select * from  user_sub limit #{param1},#{param2}
+    </select>
+
+    <select id="getTotal2" resultType="java.lang.Long">
+        select count(*) from user_sub
+    </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.example.bangbangxia.dao.UserMapper">
+    <!--插入User-->
+    <insert id="insertUser" parameterType="com.example.bangbangxia.domain.User">
+        insert into user (user_name,user_password) values (#{user_name},#{user_password})
+    </insert>
+
+    <!--更新用户-->
+    <update id="updateUser" parameterType="com.example.bangbangxia.domain.User">
+        update user set user_name=#{user_name},user_password=#{user_password} where user_id=#{user_id}
+    </update>
+
+    <!--修改用户密码-->
+    <update id="updateUserPassword" parameterType="com.example.bangbangxia.domain.User" >
+        update user set user_password=#{user_password} where user_name=#{user_name}
+    </update>
+
+    <!--删除用户-->
+    <delete id="deleteUserById" parameterType="int">
+        delete from user where user_id=#{user_id}
+    </delete>
+
+    <!--分页查询所有用户-->
+    <select id="getUserByPage" resultType="com.example.bangbangxia.domain.User">
+        select * from user limit #{param1},#{param2}
+    </select>
+
+    <!--查询总条数-->
+    <select id="getTotal" resultType="java.lang.Long">
+        select count(*) from user
+    </select>
+
+</mapper>
