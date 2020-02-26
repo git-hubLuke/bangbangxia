@@ -77,20 +77,25 @@ public class TaskController {
      * @return
      */
     @GetMapping(value = "/queryTaskList")
-    public RespPageBean queryTaskList(@RequestParam (defaultValue = "1")Integer page,@RequestParam (defaultValue = "10")Integer size,Integer task_id){
-        return taskService.queryTaskList(page,size,task_id);
+    public RespPageBean queryTaskList(@RequestParam (defaultValue = "1")Integer page,@RequestParam (defaultValue = "10")Integer size,
+                                      Integer user_id, Integer task_state){
+        return taskService.queryTaskList(page,size,user_id,task_state);
     }
 
-    /**
-     * 查看自己发布的进行中的任务
-     * @param page
-     * @param size
-     * @param user_id
-     * @return
-     */
-    @GetMapping(value = "/queryMyTaskProcess")
-    public RespPageBean queryMyTaskProcess(@RequestParam Map<String,Object> map){
-        return taskService.queryMyTaskProcess(map);
-    }
+
+//    /**
+//     * 查看自己发布的任务（1.未被接/2.正在进行中/3.已完成）/ 查看自己接受的任务（2.正在进行中/3.已完成）
+//     * @param page
+//     * @param size
+//     * @param user_id
+//     * @param accept_userId
+//     * @param task_state
+//     * @return
+//     */
+//    @GetMapping(value = "/queryMyTask")
+//    public RespPageBean queryMyTask(@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "10")Integer size,
+//                                    Integer user_id,Integer task_state,Integer accept_userId){
+//        return taskService.queryMyTask(page,size,user_id,accept_userId,task_state);
+//    }
 
 }

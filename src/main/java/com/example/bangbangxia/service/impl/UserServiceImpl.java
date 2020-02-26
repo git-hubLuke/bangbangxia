@@ -17,6 +17,26 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
+     * 用户登录验证
+     * @param user
+     * @return
+     */
+    @Override
+    public User loginCheck(User user) {
+        User u = userMapper.loginCheck(user);
+        return u;
+    }
+
+    /**
+     * 注册用户
+     * @param user
+     */
+    @Override
+    public void register(User user) {
+        userMapper.register(user);
+    }
+
+    /**
      * 添加用户
      * @param user
      * @return

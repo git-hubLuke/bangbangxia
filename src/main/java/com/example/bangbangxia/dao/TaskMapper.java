@@ -2,6 +2,7 @@ package com.example.bangbangxia.dao;
 
 import com.example.bangbangxia.domain.Task;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public interface TaskMapper {
     int updateTaskByID(Task task);
 
     //查询所有任务
-    List<Task> queryTaskList(Integer page, Integer size,Integer task_id);
+    List<Task> queryTaskList(@Param("page") Integer page, @Param("size") Integer size,@Param("user_id") Integer user_id);
     //查询所有任务的总条数
-    Long getTotal();
+    Long getTotal(@Param("user_id") Integer user_id,@Param("task_state") Integer task_state);
 
-    //查询自己发布的进行中的任务
-    List<Task> queryMyTaskProcess(Integer page, Integer size, Integer user_id);
-    //查看自己发布的进行中的任务的总条数
-    Long getTotal2(Integer task_state,Integer user_id);
+//    //查询自己的任务（发布的/接受的）
+//    List<Task> queryMyTask(@Param("page") Integer page, @Param("size") Integer size, @Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId,@Param("task_state") Integer task_state);
+//
+//    //查看自己的任务总条数（发布的/接受的）
+//    Long getTotal(@Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId, @Param("task_state") Integer task_state);
+
 }

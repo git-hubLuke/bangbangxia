@@ -11,6 +11,13 @@ import java.util.List;
  * 用户业务层接口
  */
 public interface UserService {
+
+    //登录验证
+    User loginCheck(User user);
+
+    //注册用户
+    void register(User user);
+
     //插入User
     int insertUser(User user);
 

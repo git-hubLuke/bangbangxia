@@ -28,28 +28,44 @@
         delete from task where task_id=#{task_id}
     </delete>
 
-    <!--查询所有任务-->
-    <select id="queryTaskList" resultType="com.example.bangbangxia.domain.Task">
-        select * from task where user_id != #{user_id} and task_state=1
-        order by task_createtime desc limit #{param1},#{param2}
+    <!--&lt;!&ndash;查询自己发布的/接受的任务&ndash;&gt;
+    <select id="queryMyTask" resultType="com.example.bangbangxia.domain.Task">
+        select * from task
+         where user_id=#{user_id} and task_state=#{task_state} or accept_userId=#{accept_userId} and task_state=#{task_state}
+          order by task_createtime desc limit #{page},#{size}
     </select>
-    <!--查询所有任务总条数-->
+    &lt;!&ndash;查询总条数&ndash;&gt;
     <select id="getTotal" resultType="java.lang.Long">
         select count(*) from task
-    </select>
-
-    <!--查看自己发布的正在进行中的任务-->
-    <select id="queryMyTaskProcess" resultType="com.example.bangbangxia.domain.Task">
-        select * from task where user_id = #{param3} and task_state=2
-        order by task_createtime desc limit #{param1},#{param2}
-    </select>
-    <select id="getTotal2" resultType="java.lang.Long">
-        select count(*) from task
         <where>
-            <if test="task_state!=null">
-                and task_state=#{task_state}
+            <if test="user_id!=null">
+                and user_id=#{user_id}
             </if>
-            <if test=""
+            <if test="accept_userId!=null">
+                 and accept_userId=#{accept_userId}
+            </if>
+            <if test="task_state!=null">
+                 and task_state=#{task_state}
+            </if>
         </where>
-    </select>
+    </select>-->
+
+        <!--查询所有任务-->
+        <select id="queryTaskList" resultType="com.example.bangbangxia.domain.Task">
+            select * from task where user_id != #{user_id} and task_state=1
+            order by task_createtime desc limit #{page},#{size}
+        </select>
+        <!--查询所有任务总条数-->
+        <select id="getTotal" resultType="java.lang.Long">
+            select count(*) from task
+            <where>
+                <if test="user_id!=null">
+                     and user_id != #{user_id}
+                </if>
+                <if test="task_state!=null and task_state=''">
+                     and task_state = 1
+                </if>
+            </where>
+        </select>
+
 </mapper>

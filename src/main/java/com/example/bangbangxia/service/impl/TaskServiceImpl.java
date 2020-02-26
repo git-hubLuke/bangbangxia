@@ -66,43 +66,38 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     @Override
-    public RespPageBean queryTaskList(Integer page, Integer size,Integer task_id) {
+    public RespPageBean queryTaskList(Integer page, Integer size,Integer user_id,Integer task_state) {
         if (page!=null && size!=null){
             page = (page-1) * size;
         }
-        List<Task> data = taskMapper.queryTaskList(page,size,task_id);
-        Long total = taskMapper.getTotal();
+        List<Task> data = taskMapper.queryTaskList(page,size,user_id);
+        Long total = taskMapper.getTotal(user_id,task_state);
         RespPageBean bean = new RespPageBean();
         bean.setData(data);
         bean.setTotal(total);
         return bean;
     }
 
-    /**
-     * 查看自己发布的进行中的任务
-     * @param page
-     * @param size
-     * @param user_id
-     * @param task_state
-     * @return
-     */
-    @Override
-    public RespPageBean queryMyTaskProcess(Map<String,Object> map) {
-        //1.
-        String page="";
-        if (map.containsKey(page)){
-
-        }
-
-        if (page!=null && size!=null){
-            page = (page-1) * 10;
-        }
-        List<Task> data2 = taskMapper.queryMyTaskProcess(map);
-//        Long total2 = taskMapper.getTotal2(user_id);
-        RespPageBean bean2 = new RespPageBean();
-        bean2.setData(data2);
-//        bean2.setTotal(total2);
-        return bean2;
-    }
+//    /**
+//     * 查看自己发布的任务（1.未被接/2.正在进行中/3.已完成) / 查看自己接受的任务（2.正在进行/3.已完成）
+//     * @param page
+//     * @param size
+//     * @param user_id
+//     * @param accept_userId
+//     * @param task_state
+//     * @return
+//     */
+//    @Override
+//    public RespPageBean queryMyTask(Integer page, Integer size, Integer user_id, Integer accept_userId, Integer task_state) {
+//        if (page!=null && size!=null){
+//            page = (page-1) * 10;
+//        }
+//        List<Task> data = taskMapper.queryMyTask(page,size,user_id,accept_userId,task_state);
+//        Long total = taskMapper.getTotal(user_id,accept_userId,task_state);
+//        RespPageBean bean = new RespPageBean();
+//        bean.setData(data);
+//        bean.setTotal(total);
+//        return bean;
+//    }
 
 }

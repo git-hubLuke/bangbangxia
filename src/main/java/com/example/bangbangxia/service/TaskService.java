@@ -23,8 +23,9 @@ public interface TaskService {
     int updateTaskByID(Task task);
 
     //查询所有任务
-    RespPageBean queryTaskList(Integer page, Integer size,Integer task_id);
+    RespPageBean queryTaskList(Integer page, Integer size,Integer user_id,Integer task_state);
 
-    //查看自己发布的进行中的任务
-    RespPageBean queryMyTaskProcess(Map<String,Object> map);
+//    //查看自己发布的或接受的任务
+//    RespPageBean queryMyTask(Integer page, Integer size, Integer user_id,Integer accept_userId, Integer task_state);
+
 }

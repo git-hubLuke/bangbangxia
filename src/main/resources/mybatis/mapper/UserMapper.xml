@@ -35,4 +35,23 @@
         select count(*) from user
     </select>
 
+    <!--登录验证-->
+    <select id="loginCheck" resultType="com.example.bangbangxia.domain.User" parameterType="com.example.bangbangxia.domain.User">
+         select * from user
+        <where>
+            <if test="user_name!=null and user_name!='' ">
+                 and user_name = #{user_name}
+            </if>
+             <if test="user_password!=null and user_password!='' ">
+                 and user_password = #{user_password}
+            </if>
+        </where>
+    </select>
+
+    <!--注册用户-->
+    <insert id="register" parameterType="com.example.bangbangxia.domain.User">
+        insert into user(user_name,user_password)
+         values (#{user_name},#{user_password})
+    </insert>
+
 </mapper>

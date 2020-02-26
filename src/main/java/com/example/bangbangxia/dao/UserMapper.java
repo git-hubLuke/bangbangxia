@@ -9,8 +9,15 @@ import java.util.List;
 @Repository
 @Mapper
 public interface UserMapper {
+
+    //登录验证
+    User loginCheck(User user);
+
+    //注册用户
+    void register(User user);
+
     //保存用户
-    public int insertUser(User user);
+    int insertUser(User user);
 
     //分页查询所有用户
     List<User> getUserByPage(Integer page, Integer size);
