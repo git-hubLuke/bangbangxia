@@ -1,5 +1,6 @@
 package com.example.bangbangxia.service;
 
+import com.example.bangbangxia.domain.RespBean;
 import com.example.bangbangxia.domain.RespPageBean;
 import com.example.bangbangxia.domain.Task;
 
@@ -20,12 +21,12 @@ public interface TaskService {
     int updateTask(Task task);
 
     //接受任务
-    int updateTaskByID(Task task);
+    int updateTaskByID(Integer task_id,Integer user_id, Integer accept_userId, Integer task_state);
 
     //查询所有任务
-    RespPageBean queryTaskList(Integer page, Integer size,Integer user_id,Integer task_state);
+    RespPageBean queryTaskList(Integer page, Integer size,Integer user_id);
 
-//    //查看自己发布的或接受的任务
-//    RespPageBean queryMyTask(Integer page, Integer size, Integer user_id,Integer accept_userId, Integer task_state);
+    //查看自己发布的或接受的任务
+    RespBean queryMyTask(Integer page, Integer size, Integer user_id, Integer accept_userId, Integer task_state);
 
 }

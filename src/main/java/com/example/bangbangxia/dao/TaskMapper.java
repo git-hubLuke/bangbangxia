@@ -1,11 +1,13 @@
 package com.example.bangbangxia.dao;
 
 import com.example.bangbangxia.domain.Task;
+import com.example.bangbangxia.domain.TotalSelect;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 任务的持久层接口
@@ -24,17 +26,15 @@ public interface TaskMapper {
     int updateTask(Task task);
 
     //接受任务
-    int updateTaskByID(Task task);
+    int updateTaskByID(@Param("task_id") Integer task_id,@Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId, @Param("task_state") Integer task_state);
 
     //查询所有任务
     List<Task> queryTaskList(@Param("page") Integer page, @Param("size") Integer size,@Param("user_id") Integer user_id);
     //查询所有任务的总条数
-    Long getTotal(@Param("user_id") Integer user_id,@Param("task_state") Integer task_state);
+    Long getTotal(TotalSelect totalSelect);
 
-//    //查询自己的任务（发布的/接受的）
-//    List<Task> queryMyTask(@Param("page") Integer page, @Param("size") Integer size, @Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId,@Param("task_state") Integer task_state);
-//
-//    //查看自己的任务总条数（发布的/接受的）
-//    Long getTotal(@Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId, @Param("task_state") Integer task_state);
+    //查询自己的任务（发布的/接受的）
+    List<Task> queryMyTask(@Param("page") Integer page, @Param("size") Integer size, @Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId,@Param("task_state") Integer task_state);
+
 
 }
