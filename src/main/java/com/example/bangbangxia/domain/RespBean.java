@@ -5,15 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
+ *   数据返回格式化类
+ *   200：表示成功
+ *   500：表示错误，错误信息存在msg字段中
+ *   501：bean验证错误，不管多少个错误都以Map形式返回
+ *   502：拦截器拦截到用户token出错
+ *   555：异常抛出信息
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class RespBean {
 
-    private Integer status;
-    private String msg;
+    private Integer status;//状态码
+    private String msg;//状态信息
     private Object obj;
 
     public static RespBean ok(String msg,Object obj) {
@@ -27,5 +32,10 @@ public class RespBean {
 
     public static RespBean error(String msg) {
         return new RespBean(400, msg, null);
+    }
+
+    //设置状态信息
+    public static RespBean toJson(Integer status, String msg, Object obj){
+        return new RespBean(status,msg,obj);
     }
 }
