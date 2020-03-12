@@ -1,4 +1,4 @@
-package com.example.bangbangxia.domain;
+package com.example.bangbangxia.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,13 +13,28 @@ import lombok.NoArgsConstructor;
  *   555：异常抛出信息
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class RespBean {
 
     private Integer status;//状态码
     private String msg;//状态信息
     private Object obj;
+
+    //构造方法
+    public RespBean(){}
+
+    public RespBean(Integer status, String msg, Object obj){
+        this.status = status;
+        this.msg = msg;
+        this.obj = obj;
+    }
+
+    public RespBean(Object obj){
+        this.status = 200;
+        this.msg = "ok";
+        this.obj = obj;
+    }
 
     public static RespBean ok(String msg,Object obj) {
         return new RespBean(200,msg,obj);
@@ -28,6 +43,10 @@ public class RespBean {
     //重载
     public static RespBean ok(String msg) {
         return new RespBean(200,msg,null);
+    }
+
+    public static RespBean ok(Object obj){
+        return new RespBean(obj);
     }
 
     public static RespBean error(String msg) {

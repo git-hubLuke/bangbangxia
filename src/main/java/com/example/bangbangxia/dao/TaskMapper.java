@@ -26,15 +26,15 @@ public interface TaskMapper {
     int updateTask(Task task);
 
     //接受任务
-    int updateTaskByID(@Param("task_id") Integer task_id,@Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId, @Param("task_state") Integer task_state);
+//    int updateTaskByID(@Param("task_id") Integer task_id,@Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId, @Param("task_state") Integer task_state);
+    int updateTaskByID(Task task);
 
     //查询所有任务
     List<Task> queryTaskList(@Param("page") Integer page, @Param("size") Integer size,@Param("user_id") Integer user_id);
-    //查询所有任务的总条数
+    //查询任务的总条数
     Long getTotal(TotalSelect totalSelect);
 
     //查询自己的任务（发布的/接受的）
     List<Task> queryMyTask(@Param("page") Integer page, @Param("size") Integer size, @Param("user_id") Integer user_id,@Param("accept_userId") Integer accept_userId,@Param("task_state") Integer task_state);
-
 
 }

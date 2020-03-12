@@ -4,6 +4,7 @@ import com.example.bangbangxia.domain.Book;
 import com.example.bangbangxia.domain.BookManage;
 import com.example.bangbangxia.domain.BookSub;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface BookManageMapper {
     int deleteBookById(Integer book_id);
 
     //查看图书列表
-    List<Book> queryBookList(Integer page, Integer size);
+    List<Book> queryBookList(@Param("page") Integer page, @Param("size") Integer size);
 
     //总条数
     Long getTotal();

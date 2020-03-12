@@ -8,11 +8,13 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 
-public class User implements Serializable {
+@Data
+public class User {
     private int user_id;
     private String user_name;
     private String user_password;
     private String user_phone;
+    private String user_email;//邮箱
     private String user_token;//记录登陆标记的token
     private Timestamp user_createtime;//创建时间
 

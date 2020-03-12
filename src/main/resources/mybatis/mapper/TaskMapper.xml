@@ -18,7 +18,7 @@
     </update>
 
     <!--接受任务-->
-    <update id="updateTaskByID" parameterType="int">
+    <update id="updateTaskByID" parameterType="com.example.bangbangxia.domain.Task">
          update task set accept_userId=#{user_id},task_state=2
           where task_id=#{task_id}
     </update>
@@ -50,10 +50,10 @@
         </where>
     </select>
 
-        <!--查询所有任务-->
-        <select id="queryTaskList" resultType="com.example.bangbangxia.domain.Task">
-            select * from task where user_id != #{user_id} and task_state=1
-            order by task_createtime desc limit #{page},#{size}
-        </select>
+    <!--查询所有未被接的任务-->
+    <select id="queryTaskList" resultType="com.example.bangbangxia.domain.Task">
+        select * from task where user_id != #{user_id} and task_state=1
+        order by task_createtime desc limit #{page},#{size}
+    </select>
 
 </mapper>

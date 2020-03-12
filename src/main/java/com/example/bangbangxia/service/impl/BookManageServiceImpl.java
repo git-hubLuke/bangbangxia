@@ -3,6 +3,8 @@ package com.example.bangbangxia.service.impl;
 import com.example.bangbangxia.dao.BookManageMapper;
 import com.example.bangbangxia.domain.*;
 import com.example.bangbangxia.service.BookManageService;
+import com.example.bangbangxia.utils.RespBean;
+import com.example.bangbangxia.utils.RespPageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,16 +57,14 @@ public class BookManageServiceImpl implements BookManageService {
      * @return
      */
     @Override
-    public RespPageBean queryBookList(Integer page, Integer size) {
+    public RespBean queryBookList(Integer page, Integer size) {
         if (page != null && size != null){
             page = (page-1)*size;
         }
         List<Book> data = bookManageMapper.queryBookList(page,size);
         Long total = bookManageMapper.getTotal();
-        RespPageBean bean = new RespPageBean();
-        bean.setData(data);
-        bean.setTotal(total);
-        return bean;
+        RespPageBean bean = new RespPageBean(total,data);
+        return RespBean.ok("查询成功",bean);
     }
 
     /**

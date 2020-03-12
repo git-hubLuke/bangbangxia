@@ -1,10 +1,8 @@
 package com.example.bangbangxia.service;
 
-import com.example.bangbangxia.domain.RespBean;
-import com.example.bangbangxia.domain.RespPageBean;
+import com.example.bangbangxia.utils.RespBean;
+import com.example.bangbangxia.utils.RespPageBean;
 import com.example.bangbangxia.domain.Task;
-
-import java.util.Map;
 
 /**
  * 任务的业务层接口
@@ -21,10 +19,11 @@ public interface TaskService {
     int updateTask(Task task);
 
     //接受任务
-    int updateTaskByID(Integer task_id,Integer user_id, Integer accept_userId, Integer task_state);
+//    int updateTaskByID(Integer task_id,Integer user_id, Integer accept_userId, Integer task_state);
+    int updateTaskByID(Task task);
 
     //查询所有任务
-    RespPageBean queryTaskList(Integer page, Integer size,Integer user_id);
+    RespBean queryTaskList(Integer page, Integer size,Integer user_id);
 
     //查看自己发布的或接受的任务
     RespBean queryMyTask(Integer page, Integer size, Integer user_id, Integer accept_userId, Integer task_state);

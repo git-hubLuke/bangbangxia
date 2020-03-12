@@ -1,7 +1,15 @@
 package com.example.bangbangxia.interceptor;
 
-import annotation.Token;
-import com.example.bangbangxia.domain.RespBean;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.example.bangbangxia.annotation.Token;
+import com.example.bangbangxia.common.AbstractCommon;
+import com.example.bangbangxia.domain.User;
+import com.example.bangbangxia.utils.DateUtils;
+import com.example.bangbangxia.utils.RespBean;
 import com.example.bangbangxia.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * 登录拦截器
@@ -23,7 +32,7 @@ import java.lang.reflect.Method;
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Value("${token.timeout}")
     private long timeout;
@@ -57,9 +66,46 @@ public class LoginInterceptor implements HandlerInterceptor {
                     logger.debug("用户未登录");
                     return false;
                 }
+                //解析token
+                String[] parseToken;
+                try {
+                    parseToken = (JWT.decode(token).getAudience().get(0).split("_"));//解析token并按_分割获取时间和user_id
+                    if (parseToken.length > 0){
+                        if (timeout > 0){ //timeout小于0或者负数代表永不过期
+                            Date tokenDate = DateUtils.strToDate(parseToken[0],"yyyy-mm-dd hh:mm:ss");
+                            long time = DateUtils.getTime(new Date()) - DateUtils.getTime(tokenDate);
+                            if (time > timeout){
+                                returnJsonResult(response,"您的token已过期，请重新登录",403);
+                                return false;
+                            }
+                        }
+                    }
+                } catch (JWTDecodeException j) {
+                   returnJsonResult(response,"用户未登录",403);
+                   logger.debug("token解析失败");
+                   return false;
+                }
+                User user = userService.findUserById(Integer.parseInt(parseToken[1]));//根据id查询用户
+                if (user == null){
+                    returnJsonResult(response,"用户不存在，请重新登录",500);//服务器错误
+                    logger.debug("用户不存在，请重新登录");
+                    return false;
+                }
+                //验证token
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUser_password())).build();
+                try {
+                    jwtVerifier.verify(token);
+                } catch (JWTVerificationException e) {
+                    returnJsonResult(response,"用户不存在，请重新登录",500);
+                    logger.debug("验证token失败");
+                    return false;
+                }
+                AbstractCommon.setSession(request);
+                AbstractCommon.getSession().setAttribute("user",user);
+                return true;
             }
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -2,13 +2,11 @@ package com.example.bangbangxia.controller;
 
 import com.example.bangbangxia.domain.BookManage;
 import com.example.bangbangxia.domain.BookSub;
-import com.example.bangbangxia.domain.RespBean;
-import com.example.bangbangxia.domain.RespPageBean;
+import com.example.bangbangxia.utils.RespBean;
+import com.example.bangbangxia.utils.RespPageBean;
 import com.example.bangbangxia.service.BookManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 public class BookManageController {
@@ -62,8 +60,21 @@ public class BookManageController {
      * @return
      */
     @GetMapping(value = "/queryBookList")
-    public RespPageBean queryBookList(@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "10")Integer size){
+    public RespBean queryBookList(@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "10")Integer size){
         return bookManageService.queryBookList(page,size);
+    }
+
+    /**
+     * 更新图书库存
+     * @param bookManage
+     * @return
+     */
+    @PostMapping(value = "/updateInventory")
+    public RespBean updateInventory(@RequestBody BookManage bookManage){
+        if (bookManageService.updateInventory(bookManage)==1){
+            return RespBean.ok("更新库存成功");
+        }
+        return RespBean.error("更新库存失败");
     }
 
     /**
@@ -101,19 +112,6 @@ public class BookManageController {
     @GetMapping(value = "/queryBookSub")
     public RespPageBean queryBookSub(@RequestParam(defaultValue = "1")Integer page,@RequestParam(defaultValue = "10")Integer size){
         return bookManageService.queryBookSub(page,size);
-    }
-
-    /**
-     * 更新图书库存
-     * @param bookManage
-     * @return
-     */
-    @PostMapping(value = "/updateInventory")
-    public RespBean updateInventory(@RequestBody BookManage bookManage){
-        if (bookManageService.updateInventory(bookManage)==1){
-            return RespBean.ok("更新库存成功");
-        }
-        return RespBean.error("更新库存失败");
     }
 
 }

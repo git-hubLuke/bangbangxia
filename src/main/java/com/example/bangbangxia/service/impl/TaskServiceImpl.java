@@ -1,8 +1,8 @@
 package com.example.bangbangxia.service.impl;
 
 import com.example.bangbangxia.dao.TaskMapper;
-import com.example.bangbangxia.domain.RespBean;
-import com.example.bangbangxia.domain.RespPageBean;
+import com.example.bangbangxia.utils.RespBean;
+import com.example.bangbangxia.utils.RespPageBean;
 import com.example.bangbangxia.domain.Task;
 import com.example.bangbangxia.domain.TotalSelect;
 import com.example.bangbangxia.service.TaskService;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 任务的业务层实现类
@@ -56,9 +55,13 @@ public class TaskServiceImpl implements TaskService {
      * @param task_id,user_id,accept_userId,task_state
      * @return
      */
+//    @Override
+//    public int updateTaskByID(Integer task_id,Integer user_id, Integer accept_userId, Integer task_state) {
+//        return taskMapper.updateTaskByID(task_id,user_id,accept_userId,task_state);
+//    }
     @Override
-    public int updateTaskByID(Integer task_id,Integer user_id, Integer accept_userId, Integer task_state) {
-        return taskMapper.updateTaskByID(task_id,user_id,accept_userId,task_state);
+    public int updateTaskByID(Task task) {
+        return taskMapper.updateTaskByID(task);
     }
 
     /**
@@ -68,16 +71,14 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     @Override
-    public RespPageBean queryTaskList(Integer page, Integer size,Integer user_id) {
+    public RespBean queryTaskList(Integer page, Integer size,Integer user_id) {
         if (page!=null && size!=null){
             page = (page-1) * size;
         }
         List<Task> data = taskMapper.queryTaskList(page,size,user_id);
         Long total = taskMapper.getTotal(new TotalSelect(user_id,null,1));
-        RespPageBean bean = new RespPageBean();
-        bean.setData(data);
-        bean.setTotal(total);
-        return bean;
+        RespPageBean bean = new RespPageBean(total,data);
+        return RespBean.ok("查询成功",bean);
     }
 
     /**
@@ -94,9 +95,9 @@ public class TaskServiceImpl implements TaskService {
         if (page!=null && size!=null){
             page = (page-1) * 10;
         }
-        if (user_id==null || user_id.equals("")){
+        /*if (user_id==null || user_id.equals("")){
             return RespBean.error("user_id为空");
-        }
+        }*/
         List<Task> data = taskMapper.queryMyTask(page,size,user_id,accept_userId,task_state);
         Long total = taskMapper.getTotal(new TotalSelect(user_id,accept_userId,task_state));
         RespPageBean bean = new RespPageBean(total,data);

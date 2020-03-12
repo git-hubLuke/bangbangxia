@@ -1,4 +1,4 @@
-package com.example.bangbangxia.domain;
+package com.example.bangbangxia.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

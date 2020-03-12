@@ -5,19 +5,37 @@
 <!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
 		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
 <mapper namespace="com.example.bangbangxia.dao.UserMapper">
+
     <!--插入User-->
     <insert id="insertUser" parameterType="com.example.bangbangxia.domain.User">
-        insert into user (user_name,user_password) values (#{user_name},#{user_password})
+        insert into user (
+             user_name,
+             user_password,
+             user_headpic,
+             user_phone,
+             user_email
+        )
+         values (
+           #{user_name},
+           #{user_password},
+           #{user_headpic},
+           #{user_phone},
+           #{user_email}
+        )
     </insert>
 
     <!--更新用户-->
     <update id="updateUser" parameterType="com.example.bangbangxia.domain.User">
-        update user set user_name=#{user_name},user_password=#{user_password} where user_id=#{user_id}
+        update user
+         set user_name=#{user_name},user_password=#{user_password}
+          where user_id=#{user_id}
     </update>
 
     <!--修改用户密码-->
     <update id="updateUserPassword" parameterType="com.example.bangbangxia.domain.User" >
-        update user set user_password=#{user_password} where user_name=#{user_name}
+        update user
+         set user_password=#{user_password}
+          where user_name=#{user_name}
     </update>
 
     <!--删除用户-->
@@ -25,9 +43,9 @@
         delete from user where user_id=#{user_id}
     </delete>
 
-    <!--分页查询所有用户-->
+    <!--查询所有用户-->
     <select id="getUserByPage" resultType="com.example.bangbangxia.domain.User">
-        select * from user limit #{param1},#{param2}
+        select * from user limit #{page},#{size}
     </select>
 
     <!--查询总条数-->
@@ -35,23 +53,13 @@
         select count(*) from user
     </select>
 
-    <!--登录验证-->
-    <select id="loginCheck" resultType="com.example.bangbangxia.domain.User" parameterType="com.example.bangbangxia.domain.User">
-         select * from user
-        <where>
-            <if test="user_name!=null and user_name!='' ">
-                 and user_name = #{user_name}
-            </if>
-             <if test="user_password!=null and user_password!='' ">
-                 and user_password = #{user_password}
-            </if>
-        </where>
+    <!--根据id查询用户信息-->
+    <select id="findUserById" resultType="com.example.bangbangxia.domain.User" parameterType="java.lang.Integer">
+         select * from user where user_id = #{user_id}
     </select>
 
-    <!--注册用户-->
-    <insert id="register" parameterType="com.example.bangbangxia.domain.User">
-        insert into user(user_name,user_password)
-         values (#{user_name},#{user_password})
-    </insert>
-
+    <!--根据姓名查找用户-->
+    <select id="findUserByName" resultType="com.example.bangbangxia.domain.User">
+        select * from user where user_name = #{user_name}
+    </select>
 </mapper>
